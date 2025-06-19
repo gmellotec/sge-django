@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SGE - Editar {{ item_name }}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="display-6">Editar {{ item_name }}</h3>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+    <a href="{% url return_url %}" class="btn btn-secondary mt-3">Cancelar</a>
+</div>
+
+{% endblock content %}
+    

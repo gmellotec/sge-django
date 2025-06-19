@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SGE - Detalhes da {{ item_name }}
+{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="display-6">Detalhes {{ item_name }}</h3>
+
+    <div class="card">
+        <div class="card-body">
+            <form>
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <a href="{% url 'brand_update' brand.id %}" class="btn btn-primary mt-3">Editar</a>
+            </form>
+        </div>
+    </div>
+
+    <a href="{% url return_url %}" class="btn btn-secondary mt-3">Voltar</a>
+</div>
+
+{% endblock content %}
