@@ -16,7 +16,9 @@ class BrandListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['item_name'] = ITEM_NAME
         context['item_name_plural'] = ITEM_NAME_PLURAL
+        context['return_url'] = RETURN_URL
         return context
     
     def get_queryset(self):
