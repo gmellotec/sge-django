@@ -26,7 +26,7 @@ class InflowListView(ListView):
         if product:
             queryset = queryset.filter(product__title__icontains=product)
             
-        return queryset.order_by('id')
+        return queryset
 
 
 class InflowCreateView(CreateView):
