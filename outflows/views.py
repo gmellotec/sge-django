@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from . import models, forms
+from app import metrics
 
 
 ITEM_NAME = 'Saída'
@@ -14,10 +15,16 @@ class OutflowListView(ListView):
     context_object_name = 'outflows'
     paginate_by = 10  # Define quantos itens por página
     
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['item_name_plural'] = ITEM_NAME_PLURAL
+        
+        # Adicionar dados de metricas de produtos
+        context['sales_metrics'] = metrics.get_sales_metrics
+        
         return context
+    
     
     def get_queryset(self):
         queryset = super().get_queryset()

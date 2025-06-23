@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from . import models, forms
 from brands.models import Brand
 from categories.models import Category
+from app import metrics
 
 
 ITEM_NAME = 'Produto'
@@ -44,6 +45,9 @@ class ProductListView(ListView):
         context['item_name'] = ITEM_NAME
         context['item_name_plural'] = ITEM_NAME_PLURAL
         context['return_url'] = RETURN_URL
+        
+        # Adicionar dados de metricas de produtos
+        context['product_metrics'] = metrics.get_product_metrics
         
         # Inserir os dados no contexto para poder ter acesso a eles no template
         context['categories'] = Category.objects.all()
