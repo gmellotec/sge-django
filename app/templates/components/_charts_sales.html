@@ -46,15 +46,22 @@
                     datasets: [{
                         label: 'Quantidade de Vendas',
                         data: dailySalesQuantityData.values,
-                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
                     }]
                 },
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            suggestedMax: function(context) {
+                                const maxValue = Math.max(...dailySalesQuantityData.values);
+                                return maxValue + 1;
+                            }
                         }
                     }
                 }
