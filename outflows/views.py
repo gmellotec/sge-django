@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from . import models, forms
@@ -9,7 +10,7 @@ ITEM_NAME_PLURAL = 'Saídas'
 RETURN_URL = 'outflow_list'
 
 
-class OutflowListView(ListView):
+class OutflowListView(LoginRequiredMixin, ListView):
     model = models.Outflow
     template_name = 'outflow_list.html'
     context_object_name = 'outflows'
@@ -36,7 +37,7 @@ class OutflowListView(ListView):
         return queryset
 
 
-class OutflowCreateView(CreateView):
+class OutflowCreateView(LoginRequiredMixin, CreateView):
     model = models.Outflow
     template_name = 'outflow_create.html'
     form_class = forms.OutflowForm
@@ -50,7 +51,7 @@ class OutflowCreateView(CreateView):
         return context
 
 
-class OutflowDetailView(DetailView):
+class OutflowDetailView(LoginRequiredMixin, DetailView):
     model = models.Outflow
     template_name = 'outflow_detail.html'
 

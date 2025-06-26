@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import models, forms
@@ -8,7 +9,7 @@ ITEM_NAME_PLURAL = 'Marcas'
 RETURN_URL = 'brand_list'
 
 
-class BrandListView(ListView):
+class BrandListView(LoginRequiredMixin, ListView):
     model = models.Brand
     template_name = 'brand_list.html'
     context_object_name = 'brands'
@@ -31,7 +32,7 @@ class BrandListView(ListView):
         return queryset.order_by('id')
 
 
-class BrandCreateView(CreateView):
+class BrandCreateView(LoginRequiredMixin, CreateView):
     model = models.Brand
     template_name = 'brand_create.html'
     form_class = forms.BrandForm
@@ -45,7 +46,7 @@ class BrandCreateView(CreateView):
         return context
 
 
-class BrandDetailView(DetailView):
+class BrandDetailView(LoginRequiredMixin, DetailView):
     model = models.Brand
     template_name = 'brand_detail.html'  # novo template
 
@@ -64,7 +65,7 @@ class BrandDetailView(DetailView):
         return context    
     
     
-class BrandUpdateView(UpdateView):
+class BrandUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Brand
     template_name = 'brand_update.html'
     form_class = forms.BrandForm
@@ -78,7 +79,7 @@ class BrandUpdateView(UpdateView):
         return context
     
 
-class BrandDeleteView(DeleteView):
+class BrandDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Brand
     template_name = 'brand_delete.html'
     success_url = reverse_lazy(RETURN_URL)

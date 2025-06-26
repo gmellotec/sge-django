@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'outflows',
 ]
 
+LOGIN_URL = 'login'  # URL to redirect to for login
+LOGIN_REDIRECT_URL = '/'  # URL to redirect to after login
+LOGOUT_REDIRECT_URL = '/login/'  # URL to redirect to after logout
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import models, forms
@@ -8,7 +9,7 @@ ITEM_NAME_PLURAL = 'Categorias'
 RETURN_URL = 'category_list'
 
 
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
     model = models.Category
     template_name = 'category_list.html'
     context_object_name = 'categories'
@@ -31,7 +32,7 @@ class CategoryListView(ListView):
         return queryset.order_by('id')
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = models.Category
     template_name = 'category_create.html'
     form_class = forms.CategoryForm
@@ -45,7 +46,7 @@ class CategoryCreateView(CreateView):
         return context
 
 
-class CategoryDetailView(DetailView):
+class CategoryDetailView(LoginRequiredMixin, DetailView):
     model = models.Category
     template_name = 'category_detail.html'  # novo template
 
@@ -64,7 +65,7 @@ class CategoryDetailView(DetailView):
         return context    
     
     
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Category
     template_name = 'category_update.html'
     form_class = forms.CategoryForm
@@ -78,7 +79,7 @@ class CategoryUpdateView(UpdateView):
         return context
     
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Category
     template_name = 'category_delete.html'
     success_url = reverse_lazy(RETURN_URL)
