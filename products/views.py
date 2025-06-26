@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.contrib import messages
+from django.http import JsonResponse
 from . import models, forms
 from brands.models import Brand
 from categories.models import Category
@@ -59,7 +61,6 @@ class ProductCreateView(CreateView):
     model = models.Product
     template_name = 'product_create.html'
     form_class = forms.ProductForm
-    success_url = reverse_lazy(RETURN_URL)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,6 +68,15 @@ class ProductCreateView(CreateView):
         context['item_name_plural'] = ITEM_NAME_PLURAL
         context['return_url'] = RETURN_URL
         return context
+    
+    def form_valid(self, form):
+        self.object = form.save()
+        # Adicionar contexto de sucesso para mostrar o modal
+        context = self.get_context_data()
+        context['show_success_modal'] = True
+        context['success_message'] = f'{ITEM_NAME} "{self.object.title}" cadastrado com sucesso!'
+        context['redirect_url'] = reverse_lazy(RETURN_URL)
+        return self.render_to_response(context)
 
 
 class ProductDetailView(DetailView):

@@ -18,7 +18,51 @@ SGE - Cadastrar {{ item_name }}
             </form>
         </div>
     </div>
+    
     <a href="{% url return_url %}" class="btn btn-secondary mt-3">Cancelar e Voltar Para Lista de {{ item_name_plural }}</a>
 </div>
+
+<!-- Modal de Sucesso -->
+{% if show_success_modal %}
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-success">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="successModalLabel">
+                    <i class="bi bi-check-circle-fill"></i> Sucesso!
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-check-circle text-success" style="font-size: 3rem;"></i>
+                </div>
+                <p class="fs-5">{{ success_message }}</p>
+                <p class="text-muted">Você será redirecionado para a lista de produtos.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="redirectToList()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mostrar o modal automaticamente quando houver sucesso
+    document.addEventListener('DOMContentLoaded', function() {
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+    });
+    
+    // Função para redirecionar
+    function redirectToList() {
+        window.location.href = "{{ redirect_url }}";
+    }
+    
+    // Redirecionar automaticamente após 5 segundos
+    setTimeout(function() {
+        redirectToList();
+    }, 5000);
+</script>
+{% endif %}
 
 {% endblock %}
