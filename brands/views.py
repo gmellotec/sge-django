@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import models, forms
@@ -9,11 +9,12 @@ ITEM_NAME_PLURAL = 'Marcas'
 RETURN_URL = 'brand_list'
 
 
-class BrandListView(LoginRequiredMixin, ListView):
+class BrandListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.Brand
     template_name = 'brand_list.html'
     context_object_name = 'brands'
     paginate_by = 10  # Define quantos itens por página
+    permission_required = 'brands.view_brand'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -32,11 +33,12 @@ class BrandListView(LoginRequiredMixin, ListView):
         return queryset.order_by('id')
 
 
-class BrandCreateView(LoginRequiredMixin, CreateView):
+class BrandCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.Brand
     template_name = 'brand_create.html'
     form_class = forms.BrandForm
     success_url = reverse_lazy(RETURN_URL)
+    permission_required = 'brands.add_brand'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,9 +48,10 @@ class BrandCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class BrandDetailView(LoginRequiredMixin, DetailView):
+class BrandDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.Brand
     template_name = 'brand_detail.html'  # novo template
+    permission_required = 'brands.view_brand'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,11 +68,12 @@ class BrandDetailView(LoginRequiredMixin, DetailView):
         return context    
     
     
-class BrandUpdateView(LoginRequiredMixin, UpdateView):
+class BrandUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = models.Brand
     template_name = 'brand_update.html'
     form_class = forms.BrandForm
     success_url = reverse_lazy(RETURN_URL)
+    permission_required = 'brands.change_brand'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,10 +83,11 @@ class BrandUpdateView(LoginRequiredMixin, UpdateView):
         return context
     
 
-class BrandDeleteView(LoginRequiredMixin, DeleteView):
+class BrandDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = models.Brand
     template_name = 'brand_delete.html'
     success_url = reverse_lazy(RETURN_URL)
+    permission_required = 'brands.delete_brand'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView
 from . import models, forms
@@ -9,11 +9,12 @@ ITEM_NAME_PLURAL = 'Entradas'
 RETURN_URL = 'inflow_list'
 
 
-class InflowListView(LoginRequiredMixin, ListView):
+class InflowListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.Inflow
     template_name = 'inflow_list.html'
     context_object_name = 'inflows'
     paginate_by = 10  # Define quantos itens por página
+    permission_required = 'inflows.view_inflow'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -30,11 +31,12 @@ class InflowListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class InflowCreateView(LoginRequiredMixin, CreateView):
+class InflowCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.Inflow
     template_name = 'inflow_create.html'
     form_class = forms.InflowForm
     success_url = reverse_lazy(RETURN_URL)
+    permission_required = 'inflows.add_inflow'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,9 +46,10 @@ class InflowCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class InflowDetailView(LoginRequiredMixin, DetailView):
+class InflowDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.Inflow
     template_name = 'inflow_detail.html'
+    permission_required = 'inflows.view_inflow'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

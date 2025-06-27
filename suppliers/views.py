@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from . import models, forms
@@ -9,11 +9,12 @@ ITEM_NAME_PLURAL = 'Fornecedores'
 RETURN_URL = 'supplier_list'
 
 
-class SupplierListView(LoginRequiredMixin, ListView):
+class SupplierListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.Supplier
     template_name = 'supplier_list.html'
     context_object_name = 'suppliers'
     paginate_by = 10  # Define quantos itens por página
+    permission_required = 'suppliers.view_supplier'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -32,11 +33,12 @@ class SupplierListView(LoginRequiredMixin, ListView):
         return queryset.order_by('id')
 
 
-class SupplierCreateView(LoginRequiredMixin, CreateView):
+class SupplierCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.Supplier
     template_name = 'supplier_create.html'
     form_class = forms.SupplierForm
     success_url = reverse_lazy(RETURN_URL)
+    permission_required = 'suppliers.add_supplier'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,9 +48,10 @@ class SupplierCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class SupplierDetailView(LoginRequiredMixin, DetailView):
+class SupplierDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.Supplier
     template_name = 'supplier_detail.html'  # novo template
+    permission_required = 'suppliers.view_supplier'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -65,11 +68,12 @@ class SupplierDetailView(LoginRequiredMixin, DetailView):
         return context    
     
     
-class SupplierUpdateView(LoginRequiredMixin, UpdateView):
+class SupplierUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = models.Supplier
     template_name = 'supplier_update.html'
     form_class = forms.SupplierForm
     success_url = reverse_lazy(RETURN_URL)
+    permission_required = 'suppliers.change_supplier'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,10 +83,11 @@ class SupplierUpdateView(LoginRequiredMixin, UpdateView):
         return context
     
 
-class SupplierDeleteView(LoginRequiredMixin, DeleteView):
+class SupplierDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = models.Supplier
     template_name = 'supplier_delete.html'
     success_url = reverse_lazy(RETURN_URL)
+    permission_required = 'suppliers.delete_supplier'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
